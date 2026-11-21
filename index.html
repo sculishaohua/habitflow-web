@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f7f8fc">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="description" content="HabitFlow 个人习惯追踪器">
+<link rel="manifest" href="./manifest.webmanifest">
+<title>HabitFlow</title>
+<style>
+:root{--bg:#f6f7fb;--card:#fff;--ink:#202538;--muted:#8790a5;--line:#edf0f5;--purple:#7768e8;--purple2:#eeeaff;--green:#32b889;--shadow:0 8px 28px rgba(37,43,72,.06)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans SC",sans-serif;padding-bottom:calc(82px + env(safe-area-inset-bottom))}
+button,input,select{font:inherit}button{cursor:pointer;border:0} .app{max-width:760px;margin:auto;padding:calc(18px + env(safe-area-inset-top)) 17px 24px}
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}.brand{display:flex;align-items:center;gap:10px}.logo{width:39px;height:39px;border-radius:14px;background:linear-gradient(145deg,#9286ff,#6657dc);color:#fff;display:grid;place-items:center;font-size:21px;font-weight:800;box-shadow:0 7px 16px #786be544}.brand h1{font-size:20px;margin:0;letter-spacing:-.5px}.brand small{display:block;color:var(--muted);font-size:11px;margin-top:1px}.date-chip{background:#fff;border:1px solid var(--line);padding:8px 11px;border-radius:12px;color:#69728a;font-size:12px}
+h2{font-size:22px;margin:4px 0 3px;letter-spacing:-.5px}.sub{color:var(--muted);font-size:13px;margin-bottom:17px}
+.hero{background:linear-gradient(120deg,#7568e8,#8b7ef0);color:white;border-radius:22px;padding:19px 19px 17px;box-shadow:0 12px 25px #7768e82b;margin-bottom:17px;position:relative;overflow:hidden}.hero:after{content:"";position:absolute;width:150px;height:150px;border-radius:50%;border:25px solid #ffffff16;right:-35px;top:-45px}.hero .eyebrow{font-size:12px;opacity:.82}.hero .big{font-size:31px;font-weight:750;margin:5px 0 2px}.hero .hint{font-size:12px;opacity:.86}.progress{height:7px;background:#ffffff42;border-radius:10px;margin-top:14px;overflow:hidden}.progress span{height:100%;display:block;background:#fff;border-radius:10px;width:0}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px}.section-title{font-weight:700;font-size:15px;margin:20px 0 11px}.muted{color:var(--muted)}.small{font-size:12px}
+.card{background:var(--card);border:1px solid #f0f1f6;border-radius:18px;padding:15px;box-shadow:var(--shadow);margin-bottom:11px}
+.habit{display:flex;align-items:center;gap:12px;padding:13px 14px}.dot{width:11px;height:38px;border-radius:8px;flex:none}.habit-info{min-width:0;flex:1}.habit-name{font-weight:650;font-size:14px}.habit-note{font-size:11px;color:var(--muted);margin-top:3px}.check{width:31px;height:31px;border-radius:11px;border:1.5px solid #dfe3ed;background:#fff;color:#fff;font-weight:800;font-size:17px;display:grid;place-items:center;flex:none}.check.done{background:var(--green);border-color:var(--green)}.empty{text-align:center;padding:28px 15px;color:var(--muted)}.empty b{display:block;color:var(--ink);margin-bottom:5px}
+.primary{background:var(--purple);color:white;border-radius:13px;padding:11px 15px;font-weight:650}.secondary{background:var(--purple2);color:#6759d7;border-radius:12px;padding:9px 12px;font-weight:600}.ghost{background:#f5f6fa;color:#68718a;border-radius:10px;padding:8px 10px}.danger{color:#d85e6c;background:#fff0f1}
+.nav{position:fixed;z-index:5;bottom:0;left:0;right:0;background:#ffffffed;backdrop-filter:blur(16px);border-top:1px solid var(--line);padding:9px 10px calc(9px + env(safe-area-inset-bottom));display:flex;justify-content:center}.nav-inner{width:min(760px,100%);display:grid;grid-template-columns:repeat(4,1fr);gap:5px}.nav button{background:transparent;color:#9299aa;padding:5px 2px;font-size:10px;display:flex;flex-direction:column;align-items:center;gap:3px}.nav button span{font-size:19px}.nav button.active{color:var(--purple);font-weight:700}
+.view{display:none}.view.active{display:block}.seg{display:flex;gap:5px;background:#eeeff5;border-radius:12px;padding:4px}.seg button{flex:1;padding:8px 4px;border-radius:9px;background:transparent;color:#858da0;font-size:12px}.seg button.active{background:white;color:var(--purple);box-shadow:0 2px 7px #252b4810;font-weight:700}
+.calendar-head{display:grid;grid-template-columns:repeat(7,1fr);text-align:center;color:#9aa1b1;font-size:11px;margin:14px 0 7px}.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}.day{min-height:54px;border-radius:11px;background:#f7f8fb;padding:5px 2px;text-align:center;font-size:11px;color:#6f788e;border:1px solid transparent}.day .num{font-weight:650}.day .mark{font-size:9px;margin-top:4px;color:var(--green)}.day.today{border-color:#8d80f1;background:#f2f0ff}.day.other{opacity:.35}.day.full{background:#e4f7f0}.calendar-nav{display:flex;justify-content:space-between;align-items:center;margin:13px 0}
+.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.stat{padding:15px}.stat strong{font-size:25px;display:block;margin:4px 0}.stat label{color:var(--muted);font-size:12px}
+.heat{display:grid;grid-template-columns:repeat(13,1fr);gap:4px}.cell{aspect-ratio:1;border-radius:4px;background:#eef0f5}.lv1{background:#d8f2e8}.lv2{background:#9cdec5}.lv3{background:#54c39a}.lv4{background:#229d73}
+.bar{height:8px;border-radius:8px;background:#eff0f5;overflow:hidden;margin-top:8px}.bar span{display:block;height:100%;border-radius:8px;background:var(--purple)}
+.modal{position:fixed;inset:0;background:#1c213355;z-index:10;display:none;align-items:flex-end;justify-content:center;padding:12px}.modal.show{display:flex}.sheet{background:#fff;border-radius:22px 22px 16px 16px;padding:20px;width:min(520px,100%);max-height:88vh;overflow:auto}.sheet h3{margin:0 0 16px}.field{margin:12px 0}.field label{display:block;color:#7f8799;font-size:12px;margin-bottom:6px}.field input{width:100%;border:1px solid #e6e8ef;border-radius:11px;padding:12px;background:#fbfcfe;outline:none}.colors{display:flex;gap:10px}.color{width:27px;height:27px;border-radius:50%;border:3px solid white;box-shadow:0 0 0 1px #ddd}.color.sel{box-shadow:0 0 0 2px #5144ca}.actions{display:flex;gap:9px;margin-top:18px}.actions button{flex:1}
+.coach{background:#f4f1ff;border:1px solid #e9e4ff;border-radius:16px;padding:15px;color:#5d54a8;font-size:13px;line-height:1.65}
+@media(min-width:600px){.app{padding-top:28px}.habit{padding:15px 17px}.day{min-height:67px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="top"><div class="brand"><div class="logo">H</div><div><h1>HabitFlow</h1><small>把小事坚持成习惯</small></div></div><div class="date-chip" id="todayLabel"></div></header>
+<section id="todayView" class="view active">
+<h2>今天，向前一点点</h2><div class="sub" id="dateText"></div>
+<div class="hero"><div class="eyebrow">今日完成进度</div><div class="big"><span id="doneCount">0</span><span style="font-size:17px;font-weight:500;opacity:.8"> / <span id="totalCount">0</span></span></div><div class="hint" id="heroHint">每一次打卡，都是一次小小的胜利</div><div class="progress"><span id="progressBar"></span></div></div>
+<div class="row"><div class="section-title" style="margin:3px 0">今日习惯</div><button class="secondary" onclick="openAdd()">＋ 添加习惯</button></div>
+<div id="habitList"></div>
+</section>
+<section id="calendarView" class="view">
+<h2>习惯日历</h2><div class="sub">回顾每一天的坚持</div>
+<div class="seg"><button class="active" onclick="setCalMode('week',this)">周视图</button><button onclick="setCalMode('month',this)">月视图</button><button onclick="setCalMode('year',this)">年度热力图</button></div>
+<div id="calendarContent" class="card" style="margin-top:13px"></div>
+</section>
+<section id="statsView" class="view">
+<h2>成长统计</h2><div class="sub">看见持续努力带来的变化</div>
+<div class="stats-grid"><div class="card stat"><label>累计打卡</label><strong id="allChecks">0</strong><label>次完成记录</label></div><div class="card stat"><label>今日完成率</label><strong id="todayRate">0%</strong><label>今日习惯进度</label></div><div class="card stat"><label>当前连续天数</label><strong id="streak">0</strong><label>天</label></div><div class="card stat"><label>活跃习惯</label><strong id="activeHabits">0</strong><label>个习惯</label></div></div>
+<div class="section-title">每项习惯完成情况</div><div id="habitStats"></div>
+</section>
+<section id="coachView" class="view">
+<h2>习惯教练</h2><div class="sub">温和一点，持续一点</div>
+<div class="card"><div style="font-size:27px">🌱</div><div style="font-weight:700;margin:5px 0 10px">给今天的你</div><div class="coach" id="coachText"></div></div>
+<div class="section-title">一个小建议</div><div class="card small muted">不要一次改变太多。把习惯缩小到容易开始的程度，例如“读书 2 页”或“散步 5 分钟”。完成比完美更重要。</div>
+</section>
+</div>
+<nav class="nav"><div class="nav-inner">
+<button class="active" data-tab="today"><span>☀</span>今天</button><button data-tab="calendar"><span>▦</span>日历</button><button data-tab="stats"><span>▥</span>统计</button><button data-tab="coach"><span>✧</span>教练</button>
+</div></nav>
+<div class="modal" id="modal" onclick="if(event.target===this)closeModal()"><div class="sheet"><div class="row"><h3 id="modalTitle">添加习惯</h3><button class="ghost" onclick="closeModal()">关闭</button></div>
+<div class="field"><label>习惯名称</label><input id="habitName" maxlength="28" placeholder="例如：阅读 15 分钟"></div>
+<div class="field"><label>简单备注（可选）</label><input id="habitNote" maxlength="50" placeholder="例如：睡前阅读"></div>
+<div class="field"><label>标记颜色</label><div class="colors" id="colors"></div></div>
+<div class="actions"><button class="primary" onclick="saveHabit()">保存习惯</button><button class="ghost" id="deleteBtn" style="display:none" onclick="deleteHabit()">删除</button></div>
+</div></div>
+<script>
+const KEY='habitflow.v1';
+const palette=['#8b7cf6','#45b98e','#f1a65b','#e87991','#55a6d8','#a78bca'];
+let state=load(),editing=null,chosen=palette[0],calMode='week',calOffset=0;
+function load(){try{return JSON.parse(localStorage.getItem(KEY))||{habits:[],checks:{}}}catch(e){return{habits:[],checks:{}}}}
+function save(){localStorage.setItem(KEY,JSON.stringify(state))}
+function iso(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function today(){return iso(new Date())}
+function isDone(id,date){return !!(state.checks[date]||{})[id]}
+function toggle(id){let d=today();state.checks[d]=state.checks[d]||{};if(state.checks[d][id])delete state.checks[d][id];else state.checks[d][id]=true;save();render()}
+function renderToday(){
+let active=state.habits.filter(h=>!h.archived),done=active.filter(h=>isDone(h.id,today())).length,total=active.length;
+document.getElementById('doneCount').textContent=done;document.getElementById('totalCount').textContent=total;document.getElementById('progressBar').style.width=(total?done/total*100:0)+'%';
+document.getElementById('heroHint').textContent=total?(done===total?'太棒了！今天的习惯全部完成。':`再完成 ${total-done} 项，就达成今天的小目标。`):'添加一个小习惯，开启你的第一天。';
+let box=document.getElementById('habitList');
+if(!active.length){box.innerHTML='<div class="card empty"><b>还没有习惯</b>从一个简单的小目标开始吧。</div>';return}
+box.innerHTML=active.map(h=>`<div class="card habit"><div class="dot" style="background:${h.color}"></div><div class="habit-info" onclick="editHabit('${h.id}')"><div class="habit-name">${esc(h.name)}</div><div class="habit-note">${esc(h.note||'点击名称编辑')}</div></div><button class="check ${isDone(h.id,today())?'done':''}" onclick="toggle('${h.id}')">${isDone(h.id,today())?'✓':''}</button></div>`).join('');
+}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function openAdd(){editing=null;chosen=palette[0];document.getElementById('modalTitle').textContent='添加习惯';document.getElementById('habitName').value='';document.getElementById('habitNote').value='';document.getElementById('deleteBtn').style.display='none';drawColors();document.getElementById('modal').classList.add('show')}
+function editHabit(id){let h=state.habits.find(x=>x.id===id);if(!h)return;editing=id;chosen=h.color;document.getElementById('modalTitle').textContent='编辑习惯';document.getElementById('habitName').value=h.name;document.getElementById('habitNote').value=h.note||'';document.getElementById('deleteBtn').style.display='block';drawColors();document.getElementById('modal').classList.add('show')}
+function drawColors(){document.getElementById('colors').innerHTML=palette.map(c=>`<button class="color ${chosen===c?'sel':''}" style="background:${c}" onclick="chosen='${c}';drawColors()"></button>`).join('')}
+function saveHabit(){let name=document.getElementById('habitName').value.trim();if(!name){alert('请填写习惯名称');return}let note=document.getElementById('habitNote').value.trim();if(editing){let h=state.habits.find(x=>x.id===editing);h.name=name;h.note=note;h.color=chosen;h.archived=false}else state.habits.push({id:'h'+Date.now(),name,note,color:chosen,created:today()});save();closeModal();render()}
+function deleteHabit(){if(!editing)return;if(!confirm('确定删除这个习惯及其打卡记录吗？'))return;state.habits=state.habits.filter(h=>h.id!==editing);Object.keys(state.checks).forEach(d=>delete state.checks[d][editing]);save();closeModal();render()}
+function closeModal(){document.getElementById('modal').classList.remove('show')}
+function setTab(tab){document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));document.getElementById(tab+'View').classList.add('active');document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.tab===tab));render()}
+document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>setTab(b.dataset.tab)));
+function startOfWeek(d){let x=new Date(d);x.setHours(0,0,0,0);x.setDate(x.getDate()-((x.getDay()+6)%7));return x}
+function setCalMode(mode,el){calMode=mode;calOffset=0;document.querySelectorAll('.seg button').forEach(b=>b.classList.remove('active'));el.classList.add('active');renderCalendar()}
+function shiftCal(n){calOffset+=n;renderCalendar()}
+function completion(date){let active=state.habits.filter(h=>!h.archived);return active.length?active.filter(h=>isDone(h.id,date)).length/active.length:0}
+function renderCalendar(){let box=document.getElementById('calendarContent');let out='';
+if(calMode==='week'){let start=startOfWeek(new Date());start.setDate(start.getDate()+calOffset*7);out=`<div class="calendar-nav"><button class="ghost" onclick="shiftCal(-1)">‹ 上周</button><b>${iso(start)} 至 ${iso(new Date(start.getTime()+6*86400000))}</b><button class="ghost" onclick="shiftCal(1)">下周 ›</button></div><div class="calendar-head">${['一','二','三','四','五','六','日'].map(x=>'<div>'+x+'</div>').join('')}</div><div class="calendar">`;for(let i=0;i<7;i++){let d=new Date(start);d.setDate(start.getDate()+i);let v=completion(iso(d));out+=`<div class="day ${iso(d)===today()?'today':''} ${v===1&&state.habits.length?'full':''}"><div class="num">${d.getDate()}</div><div class="mark">${Math.round(v*100)}%</div></div>`}out+='</div>'}
+else if(calMode==='month'){let d=new Date();d.setDate(1);d.setMonth(d.getMonth()+calOffset);let y=d.getFullYear(),m=d.getMonth(),first=(d.getDay()+6)%7,last=new Date(y,m+1,0).getDate();out=`<div class="calendar-nav"><button class="ghost" onclick="shiftCal(-1)">‹ 上月</button><b>${y}年${m+1}月</b><button class="ghost" onclick="shiftCal(1)">下月 ›</button></div><div class="calendar-head">${['一','二','三','四','五','六','日'].map(x=>'<div>'+x+'</div>').join('')}</div><div class="calendar">`;for(let i=0;i<first;i++)out+='<div class="day other"></div>';for(let n=1;n<=last;n++){let dt=iso(new Date(y,m,n)),v=completion(dt);out+=`<div class="day ${dt===today()?'today':''} ${v===1&&state.habits.length?'full':''}"><div class="num">${n}</div><div class="mark">${v?Math.round(v*100)+'%':''}</div></div>`}out+='</div>'}
+else{let y=new Date().getFullYear()+calOffset;out=`<div class="calendar-nav"><button class="ghost" onclick="shiftCal(-1)">‹</button><b>${y} 年度热力图</b><button class="ghost" onclick="shiftCal(1)">›</button></div><div class="heat">`;for(let i=0;i<364;i++){let d=new Date(y,0,1);d.setDate(d.getDate()+i);let v=completion(iso(d)),lv=v===0?0:Math.min(4,Math.ceil(v*4));out+=`<div class="cell ${lv?'lv'+lv:''}" title="${iso(d)} ${Math.round(v*100)}%"></div>`}out+='</div><div class="small muted" style="margin-top:10px">颜色越深，代表当天习惯完成率越高。</div>'}
+box.innerHTML=out}
+function streak(){let d=new Date(),n=0;while(true){let v=completion(iso(d));if(v<1||!state.habits.filter(h=>!h.archived).length)break;n++;d.setDate(d.getDate()-1)}return n}
+function renderStats(){let active=state.habits.filter(h=>!h.archived),all=Object.values(state.checks).reduce((a,o)=>a+Object.keys(o).length,0),done=active.filter(h=>isDone(h.id,today())).length;document.getElementById('allChecks').textContent=all;document.getElementById('todayRate').textContent=(active.length?Math.round(done/active.length*100):0)+'%';document.getElementById('streak').textContent=streak();document.getElementById('activeHabits').textContent=active.length;document.getElementById('habitStats').innerHTML=active.length?active.map(h=>{let c=Object.values(state.checks).filter(o=>o[h.id]).length;return `<div class="card"><div class="row"><b>${esc(h.name)}</b><b>${c} 次</b></div><div class="bar"><span style="width:${Math.min(100,c/Math.max(1,Object.keys(state.checks).length)*100)}%;background:${h.color}"></span></div></div>`}).join(''):'<div class="card empty">添加习惯后，这里会显示统计。</div>'}
+function renderCoach(){let active=state.habits.filter(h=>!h.archived),done=active.filter(h=>isDone(h.id,today())).length;let msg=!active.length?'先添加一个小习惯吧。建议从每天只需两分钟的行动开始。':done===active.length?'今天的习惯全部完成！给自己一点肯定，也别忘了休息。':done===0?'今天还没开始也没关系。选一个最容易完成的习惯，先做两分钟。':`今天已经完成 ${done}/${active.length} 项。很不错！接下来只专注于下一项，不必追求一次做到完美。`;document.getElementById('coachText').textContent=msg}
+function render(){let d=new Date();document.getElementById('todayLabel').textContent=(d.getMonth()+1)+'月'+d.getDate()+'日';document.getElementById('dateText').textContent=d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日 · '+['星期日','星期一','星期二','星期三','星期四','星期五','星期六'][d.getDay()];renderToday();renderCalendar();renderStats();renderCoach()}
+render();
+if('serviceWorker' in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+</script>
+</body></html>
